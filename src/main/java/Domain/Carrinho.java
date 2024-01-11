@@ -3,28 +3,42 @@ package Domain;
 import org.json.JSONObject;
 import java.util.List;
 
-public class Product {
-    private int id = 0;
+public class Carrinho {
+    public int id = 0;
     public String title = "";
     public String value = "";
     public String image = "";
     public String description = "";
 
     // Constructors
-    public Product() {
+    public Carrinho() {
     }
 
-    public Product(String title, String value, String image, String description) {
+    public Carrinho(String title, String value, String image, String description) {
         this.title = title;
         this.value = value;
         this.image = image;
         this.description = description;
     }
 
-    public Product(int id, String title, String value, String image, String description) {
+    public Carrinho(int id, String title, String value, String image, String description) {
+    }
+
+    public Carrinho(int id){
+        this.id = id;
     }
 
     // Getters and setters
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -66,7 +80,7 @@ public class Product {
         return json;
     }
 
-    public static Product getProduct(int index, List<Product> productList) {
+    public static Carrinho getProduct(int index, List<Carrinho> productList) {
         if (index >= 0 && index < productList.size()) {
             return productList.get(index);
         } else {
@@ -74,16 +88,19 @@ public class Product {
         }
     }
 
-    public static List<Product> getAllProducts(List<Product> productList) {
-        return productList;
+    public static List<Carrinho> getAllProducts(List<Carrinho> carrinhoList) {
+        return carrinhoList;
     }
 
-    public JSONObject listToJson(List<Product> productList) {
+    public JSONObject arrayToJson(List<Carrinho> carrinhoList) {
+
         JSONObject json = new JSONObject();
-        if (!productList.isEmpty()) {
+        if (!carrinhoList.isEmpty()) {
             int keyJson = 0;
-            for (Product product : productList) {
+
+            for (Carrinho product : carrinhoList) {
                 JSONObject valueJson = new JSONObject();
+                valueJson.put("id", product.getId());
                 valueJson.put("title", product.getTitle());
                 valueJson.put("value", product.getValue());
                 valueJson.put("image", product.getImage());

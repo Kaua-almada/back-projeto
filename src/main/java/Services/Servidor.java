@@ -4,8 +4,8 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
-import controller.ProductsController;
-import controller.SalesController;
+import controller.CarrinhoController;
+import controller.ProdutosWebController;
 import controller.UsersController;
 
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.net.InetSocketAddress;
 
 public class Servidor {
     public void piServer() throws IOException {
-        HttpHandler salesHandler = new SalesController.produtos();
-        HttpHandler product = new ProductsController.ProdutosHandler();
+        HttpHandler salesHandler = new ProdutosWebController.ProdutosHandler();
+        HttpHandler product = new CarrinhoController.ProdutosHandler();
         HttpHandler userHandler = new UsersController.user();
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);

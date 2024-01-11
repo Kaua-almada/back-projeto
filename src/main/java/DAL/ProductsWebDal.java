@@ -1,6 +1,6 @@
 package DAL;
-
-import Domain.Product;
+import Domain.ProdutosWeb;
+import Domain.Usuarios;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsDal {
+public class ProductsWebDal {
     public static Connection conectar() {
         Connection conexao = null;
         try {
@@ -37,28 +37,33 @@ public class ProductsDal {
         int linhasAfetadas = 0;
         Connection conexao = conectar();
 
-        try (PreparedStatement statement = conexao.prepareStatement(sql)) {
-            statement.setString(1, title);
-            statement.setString(2, value);
-            statement.setString(3, image);
-            statement.setString(4, description);
+        System.out.println("o banco esta "+ conexao);
+        try (PreparedStatement statement = conexao.prepareStatement(sql)){
+            System.out.println("O ERRO NO TRY FOI " + statement);
+            statement.setString(1,title);
+            statement.setString(2,value);
+            statement.setString(3,image);
+            statement.setString(4,description);
+
 
             linhasAfetadas = statement.executeUpdate();
 
-            System.out.println("Foram modificadas " + linhasAfetadas + " no banco de dados");
+            System.out.println("Foram modificadas "+ linhasAfetadas + " no banco de dados");
 
             return linhasAfetadas;
-        } catch (SQLException e) {
-            System.out.println("O erro na inserção de dados foi: " + e);
+        }
+        catch(SQLException e){
+            System.out.println("o banco esta (NO CATCH) "+ conexao);
+            System.out.println("O erro na inserçao de dados NO CATCH FOI: " + e);
             conexao.close();
         }
         conexao.close();
         return linhasAfetadas;
     }
 
-    public List<Product> listarProdutos() throws SQLException {
+    public List<ProdutosWeb> listarProdutos() throws SQLException {
         String sql = "SELECT * FROM produtos";
-        List<Product> productList = new ArrayList<>();
+        List<ProdutosWeb> productList = new ArrayList<>();
 
         try (PreparedStatement statement = conectar().prepareStatement(sql)) {
             ResultSet result = statement.executeQuery();
@@ -70,7 +75,7 @@ public class ProductsDal {
                 String image = result.getString("image");
                 String description = result.getString("description");
 
-                Product product = new Product(id, title, value, image, description);
+                ProdutosWeb product = new ProdutosWeb(id, title, value, image, description);
                 productList.add(product);
 
                 System.out.println("id:" + id);
@@ -79,10 +84,14 @@ public class ProductsDal {
                 System.out.println("image:" + image);
                 System.out.println("description:" + description);
                 System.out.println(" ");
+
+                ProdutosWeb currentUser = new ProdutosWeb(id,title, value,image,description);
+
+                productList.add(currentUser);
             }
 
             return productList;
-        } catch (SQLException e) {
+        } catch (SQLException e){
             System.out.println("O erro na listagem de dados foi: " + e);
         }
         return productList;

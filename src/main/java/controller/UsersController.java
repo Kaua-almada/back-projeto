@@ -14,6 +14,7 @@ import java.util.List;
 public class UsersController {
 
     public static class user implements HttpHandler {
+        public static String response = "";
 
         RespostaEndPoint res = new RespostaEndPoint();
         List<Domain.Usuarios> usersList = new ArrayList<>();
@@ -47,11 +48,19 @@ public class UsersController {
             RespostaEndPoint res = new RespostaEndPoint();
             List<Domain.Usuarios> usersList = new ArrayList<>();
             UserDal userDal = new UserDal();
+            JSONObject json;
+            Usuarios usuarios = new Usuarios();
 
             List<Domain.Usuarios> getAllFromArray = Domain.Usuarios.getAllUser(usersList);
-//            Domain.Usuarios usersJson = new Domain.Usuarios(id);
+                try{
+                    usersList = userDal.listarUsuario();
+                    json = usuarios.arraytoJson(usersList);
 
-            if(!getAllFromArray.isEmpty()){
+                    res.enviarResponseJson(exchange,json,200);
+                }catch (Exception e){
+                    System.out.println("o erro foi" +e);
+                    response = "ouve um problema ao conectar";
+                }
 
                 for(Domain.Usuarios users : getAllFromArray){
                     System.out.println("name: " + users.getName());
@@ -117,6 +126,7 @@ public class UsersController {
                 JSONObject json = new JSONObject(new String(resquestBody.readAllBytes()));
 
                 Usuarios usuarios = new Usuarios(
+                        json.getInt("id"),
                         json.getString("name"),
                         json.getString("lastName"),
                         json.getString("email"),
@@ -143,7 +153,6 @@ public class UsersController {
             UserDal userDal = new UserDal();
             int id = 1;
 
-
             String response = "";
 
             try(InputStream resquestBody = exchange.getRequestBody()){
@@ -168,7 +177,4 @@ public class UsersController {
             return;
         }
     }
-
-}
-
 

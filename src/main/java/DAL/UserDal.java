@@ -1,9 +1,13 @@
 package DAL;
+import Domain.Usuarios;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDal {
     public static Connection conectar(){
@@ -65,17 +69,19 @@ public class UserDal {
         return linhasAfetadas;
     }
 
-    public ResultSet listarUsuario()throws SQLException{
+    public List listarUsuario()throws SQLException{
         String sql = "SELECT * FROM usuarios";
         ResultSet result = null;
 
+        List<Usuarios> userArray = new ArrayList<>();
+
         try(PreparedStatement statement = conectar().prepareStatement(sql)){
 
-            System.out.println("Listagem dos Usuarios:");
+
             result = statement.executeQuery();
+            System.out.println("Listagem dos Usuarios:");
 
             while(result.next()){
-
                 int id = result.getInt("id");
                 String name = result.getString("name");
                 String lastName = result.getString("lastName");
@@ -83,19 +89,22 @@ public class UserDal {
                 String passeword = result.getString("passeword");
                 String cpf = result.getString("cpf");
 
-                System.out.println("id:" +id);
-                System.out.println("lastName:" +id);
-                System.out.println("email:" +id);
-                System.out.println("passeword:" +id);
-                System.out.println("cpf:" +id);
-                System.out.println(" ");
+
+                Usuarios currentUser = new Usuarios(id,name, lastName,email,passeword,cpf);
+
+                userArray.add(currentUser);
+
+
             }
-                return result;
+            result.close();
+            return userArray;
+
         }catch (SQLException e){
             System.out.println("O erro na listagem de dados foi: " + e);
         }
-                return result;
+                return userArray;
     }
+
    // Connection conexao,int id, String name, String lastName, String email, String passeword, String cpf
     public int atualizarUsuario(String name, String lastName, String email, String passeword, String cpf, int id) throws SQLException{
         String sql = "UPDATE usuarios SET name = ?,lastName = ?, email = ?, passeword = ?, cpf ? WHERE id = ?";

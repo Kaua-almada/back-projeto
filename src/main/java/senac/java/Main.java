@@ -8,7 +8,7 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         Servidor servidor = new Servidor();
-//        ConexaoSqlServer conexaoSqlServer = new ConexaoSqlServer();
+        ConexaoSqlServer conexaoSqlServer = new ConexaoSqlServer();
         servidor.piServer();
         }
 }

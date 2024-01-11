@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class Usuarios {
-    int id = 0;
+    public int id = 0;
     public String name = "";
     public String lastName = "";
 
@@ -20,6 +20,19 @@ public class Usuarios {
 
     }
 
+
+    public Usuarios(int id,String name, String lastName, String email, String passeword, String cpf) {
+        this.id = id;
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.passeword = passeword;
+        this.cpf = cpf;
+    }
+
+    public Usuarios() {
+
+    }
 
     public Usuarios(String name, String lastName, String email, String passeword, String cpf) {
         this.name = name;
@@ -71,6 +84,11 @@ public class Usuarios {
         this.cpf = cpf;
     }
 
+    public  int getId(){
+        return  id;
+    }
+    public void setId(int id){this.id = id;};
+
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
@@ -103,6 +121,7 @@ public class Usuarios {
             var keyJson = 0;
             for (Usuarios users : usersListArray) {
                 JSONObject valorJson = new JSONObject();
+                valorJson.put("id",users.getId());
                 valorJson.put("name", users.getName());
                 valorJson.put("lastName", users.getLastname());
                 valorJson.put("email", users.getemail());
